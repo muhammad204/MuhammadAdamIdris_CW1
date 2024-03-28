@@ -51,8 +51,40 @@
                 <span v-for="n in 5-course.rating">☆</span>
               </div>
             </div> 
-          </div>
+        </div>
 
+        <div v-else>
+            <button v-on:click="showCheckout">Homepage {{cartItemCount}}</button>
+    
+            <h2>Shopping cart</h2>
+            <ul>
+              <li v-for="item in cart" :key="item.id">
+                {{item.title}} {{item.price}}
+                <button @click="removeFromCart(item)">Remove</button>
+              </li>
+            </ul>
+    
+            <h2>Checkout</h2>
+            <p>
+              <strong>First Name:</strong>
+              <input
+                v-model.trim="order.firstName"
+                type="text"
+                pattern="^[a-zA-Z\s]+$"
+              />
+            </p>
+    
+            <p>
+              <strong>Phone Number:</strong>
+              <input v-model.number="order.number" type="number" />
+            </p>
+    
+            <h2>Order Information</h2>
+            <p>First Name: {{order.firstName}}</p>
+            <p>phone Number: {{order.number}}</p>
+    
+            <button v-on:click="submitForm">Place Order</button>
+        </div>
     </div>    
 </body>
 
