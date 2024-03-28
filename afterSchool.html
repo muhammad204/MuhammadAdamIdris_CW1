@@ -8,8 +8,52 @@
         <script src="courses.js"></script>
         <link rel="stylesheet" href="css/bootstrap.css">
       </head>
-    
+
 <body>
+    <div id="app" class="container">
+        <h1 v-text="sitename"></h1>
+
+        <div v-if="showCourse">
+            <button v-on:click="showCheckout" :class="{'disabled': cart.length ===0}">Checkout {{cartItemCount}}</button><br>
+            
+            <div v-for="course in courses">
+              <img v-bind:src="course.image" />
+              <h2 v-text="course.title"></h2>
+              <p v-html="course.description"></p>
+              <p>Location: {{course.location}}</p>
+              <p>Price: {{course.price}}</p>
     
+              <p>
+                Available stock: {{course.availableInventory -cartCount(course.id)
+                }}
+              </p>
+    
+              <button v-on:click="addToCart(course)" v-if="canAddToCart(course)">
+                Add to cart
+              </button>
+              <button disabled="disabled" v-else>Add to cart</button>
+              <span
+                v-if="course.availableInventory
+            === cartCount(course.id)"
+              >
+                All out!
+              </span>
+    
+              <span
+                v-else-if="course.availableInventory - cartCount(course.id) < 5"
+              >
+                Only {{course.availableInventory - cartCount(course.id)}} left!
+              </span>
+              <span v-else>Buy now!</span>
+    
+              <div>
+                <span v-for="n in course.rating">★</span>
+                <span v-for="n in 5-course.rating">☆</span>
+              </div>
+            </div> 
+          </div>
+
+    </div>    
 </body>
+
 </html>
