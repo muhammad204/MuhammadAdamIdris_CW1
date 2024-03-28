@@ -86,6 +86,24 @@
             <button v-on:click="submitForm">Place Order</button>
         </div>
     </div>    
+
+    <script>
+        var app = new Vue({
+        el: "#app",
+        data: {
+          sitename: "Welcome to After School!",
+          courses: courses,
+          cart: [],
+          showCourse: true,
+          order: {
+            firstName: "",
+            phoneNumber: "",
+          },
+        },
+
+        
+    });
+    </script>
 </body>
 
 </html>
