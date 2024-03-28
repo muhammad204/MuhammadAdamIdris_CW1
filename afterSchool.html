@@ -101,7 +101,41 @@
           },
         },
 
-        
+        methods: {
+          addToCart(course) {
+            this.cart.push(course.id);
+            //console.log(this.cart);
+          },
+          removeFromCart(course) {
+            const index = this.cart.indexOf(course);
+            if (index !== -1) {
+              this.cart.splice(index, 1); // Remove the course from the cart
+              // Assuming `courses` is an array containing course objects and each course object has a property `id`
+              const foundCourse = this.courses.find(
+                (item) => item.id === course.id
+              ); // Find the course in the courses array
+              foundCourse.spaces++; // Increment the spaces available for the course
+            }
+          },
+          showCheckout() {
+            this.showCourse = this.showCourse ? false : true;
+          },
+          submitForm() {
+            alert("Order submitted!");
+          },
+          canAddToCart(course) {
+            return course.availableInventory > this.cartCount(course.id);
+          },
+          cartCount(id) {
+            let count = 0;
+            for (let i = 0; i < this.cart.length; i++) {
+              if (this.cart[i] === id) {
+                count++;
+              }
+            }
+            return count;
+          },
+        }
     });
     </script>
 </body>
