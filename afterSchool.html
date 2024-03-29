@@ -22,7 +22,7 @@
           Checkout {{cartItemCount}}</button
         ><br />
 
-        <div class="row">
+        <div class="row m-3">
           <div class="col-md-12">
             <input
               type="text"
@@ -30,6 +30,21 @@
               placeholder="Search lessons..."
             />
           </div>
+        </div> 
+
+        <div class="form-group">
+          <label for="">Sort by</label>
+          <select v-model="sortOption" class="form-control" style="width: 350px">
+            <option value="title">Title</option>
+            <option value="location">Location</option>
+            <option value="price">Price</option>
+            <option value="spaces">Spaces</option>
+          </select>
+          <br />
+        <select v-model="sortOrder" class="form-control" style="width: 350px">
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
         </div>
 
         <div class="row m-4">
@@ -133,6 +148,8 @@
           searchQuery: "",
           cart: [],
           showCourse: true,
+          sortOption:'title',
+          sortOrder:'asc',
           order: {
             firstName: "",
             phoneNumber: "",
@@ -181,8 +198,10 @@
             });
             return items;
           },
+
           sortedCourses() {
             var coursesArray = this.courses;
+            var order = this.sortOrder === 'asc' ? 1 : -1;
 
             if (this.searchQuery) {
               var query = this.searchQuery.toLowerCase();
@@ -192,12 +211,11 @@
                   c.location.toLowerCase().includes(query)
               );
             }
-            function compare(a, b) {
-              if (a.price > b.price) return 1;
-              if (a.price < b.price) return -1;
+            return coursesArray.sort((a,b) => {
+              if (a[this.sortOption] > b[this.sortOption]) return 1 * order;
+              if (a[this.sortOption] < b[this.sortOption]) return -1 * order;
               return 0;
-            }
-            return coursesArray.sort(compare);
+            });
           },
 
           validInput() {
@@ -207,19 +225,28 @@
             );
           },
 
-          sorting(){
-            return this.searchLessons.slice().sort((a, b) =>{
-              const valueA = a[this.sortAttribute];
-              const valueB = b[this.sortAttribute];
+          // sorting(){
+          //   if (this.searchQuery) {
+          //     var query = this.searchQuery.toLowerCase();
+          //     coursesArray = coursesArray.filter(
+          //       (c) =>
+          //         c.title.toLowerCase().includes(query) ||
+          //         c.location.toLowerCase().includes(query)
+          //     );
+          //   }
 
-              const compare = typeof valueA === 'string'
-              ? valueA.localeCompare(valueB)
-              : valueA - valueB;
+          //   return this.searchLessons.slice().sort((a, b) =>{
+          //     const valueA = a[this.sortAttribute];
+          //     const valueB = b[this.sortAttribute];
 
-              return this.sortOrder === 'asc' ? compare : -compare;
-            })
-          }
-          
+          //     const compare = typeof valueA === 'string'
+          //     ? valueA.localeCompare(valueB)
+          //     : valueA - valueB;
+
+          //     return this.sortOrder === 'asc' ? compare : -compare;
+          //   });
+          // }
+
         },
       });
     </script>

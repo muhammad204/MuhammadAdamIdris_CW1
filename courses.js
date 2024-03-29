@@ -4,7 +4,7 @@ let courses = [
     title: "Dancing",
     description: "Explore various dance styles and techniques while improving coordination, rhythm, and confidence.",
     price: 20.0,
-    location: "DKP",
+    location: "Dance Studio",
     image: "images/dancing.jpg",
     availableInventory: 5,
     rating: 3,
