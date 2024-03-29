@@ -11779,5 +11779,11 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.ct{
+  border-top-left-radius: var(--bs-card-inner-border-radius);
+  border-top-right-radius: var(--bs-card-inner-border-radius);
+  height: 200px;
+  width: 100%;
+} 
 
 /*# sourceMappingURL=bootstrap.css.map */

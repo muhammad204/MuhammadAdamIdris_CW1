@@ -2,7 +2,7 @@ let courses = [
   {
     id: 1,
     title: "Dancing",
-    description: "Mathematics",
+    description: "Explore various dance styles and techniques while improving coordination, rhythm, and confidence.",
     price: 20.0,
     location: "DKP",
     image: "images/dancing.jpg",
@@ -12,7 +12,7 @@ let courses = [
   {
     id: 2,
     title: "Programming",
-    description: "Mathematics",
+    description: "Learn the fundamentals of coding and computer science through interactive projects and problem-solving exercises.",
     price: 20.0,
     location: "DKP",
     image: "images/programming.jpg",
@@ -22,7 +22,7 @@ let courses = [
   {
     id: 3,
     title: "Public Speaking",
-    description: "Mathematics",
+    description: "Develop effective communication skills, overcome stage fright, and learn to deliver compelling speeches and presentations.",
     price: 20.0,
     location: "DKP",
     image: "images/pspeaking.jpg",
@@ -32,7 +32,7 @@ let courses = [
   {
     id: 4,
     title: "Chess",
-    description: "",
+    description: "Sharpen strategic thinking, problem-solving, and concentration skills through the game of chess.",
     price: 20.0,
     location: "DKP",
     image: "images/chess.jpg",
@@ -42,7 +42,7 @@ let courses = [
   {
     id: 5,
     title: "Drama",
-    description: "",
+    description: "Express creativity, build confidence, and develop acting skills through improvisation, role-playing, and script analysis.",
     price: 20.0,
     location: "DKP",
     image: "images/drama.jpg",
@@ -52,7 +52,7 @@ let courses = [
   {
     id: 6,
     title: "English",
-    description: "",
+    description: "Enhance language proficiency, reading comprehension, and writing skills through engaging activities and literature exploration.",
     price: 20.0,
     location: "DKP",
     image: "images/english.jpg",
@@ -62,7 +62,7 @@ let courses = [
   {
     id: 7,
     title: "Mathematics",
-    description: "",
+    description: "Strengthen mathematical concepts, problem-solving abilities, and critical thinking skills through hands-on activities and puzzles.",
     price: 20.0,
     location: "DKP",
     image: "images/maths.jpg",
@@ -72,7 +72,7 @@ let courses = [
   {
     id: 8,
     title: "Photography",
-    description: "",
+    description: " Explore the art of photography, learn camera techniques, composition, and editing skills to capture memorable moments.",
     price: 20.0,
     location: "DKP",
     image: "images/photography.jpg",
@@ -82,7 +82,7 @@ let courses = [
   {
     id: 9,
     title: "Arabic",
-    description: "",
+    description: "Immerse in the rich language and culture of Arabic through language instruction, conversation practice, and cultural activities.",
     price: 20.0,
     location: "DKP",
     image: "images/arabic.jpg",
@@ -92,7 +92,7 @@ let courses = [
   {
     id: 10,
     title: "Artwork",
-    description: "",
+    description: "Unleash creativity, experiment with various art mediums, and develop artistic skills through guided projects and techniques.",
     price: 20.0,
     location: "DKP",
     image: "images/arts.jpg",
@@ -102,7 +102,7 @@ let courses = [
   {
     id: 11,
     title: "Cooking",
-    description: "",
+    description: " Discover the joy of cooking, learn culinary techniques, recipes, and nutrition while preparing delicious dishes.",
     price: 20.0,
     location: "DKP",
     image: "images/cooking.jpg",
@@ -112,7 +112,7 @@ let courses = [
   {
     id: 12,
     title: "Swimming",
-    description: "",
+    description: "Learn essential swimming strokes, water safety skills, and build endurance in a supportive environment.",
     price: 20.0,
     location: "DKP",
     image: "images/swimming.jpg",
@@ -122,7 +122,7 @@ let courses = [
   {
     id: 13,
     title: "Robotics",
-    description: "",
+    description: "Dive into the world of robotics, learn about automation, programming, and engineering principles through hands-on projects.",
     price: 20.0,
     location: "DKP",
     image: "images/robotics.jpg",
@@ -132,7 +132,7 @@ let courses = [
   {
     id: 14,
     title: "Qur'an",
-    description: "learn Quran",
+    description: " Explore the teachings and recitation of the Quran, deepen spiritual understanding, and develop memorization skills.",
     price: 20.0,
     location: "DKP",
     image: "images/quran.jpg",
@@ -142,7 +142,7 @@ let courses = [
   {
     id: 15,
     title: "Football",
-    description: "Train with....",
+    description: " Enhance teamwork, coordination, and physical fitness while learning the rules and strategies of football.",
     price: 20.0,
     location: "DKP",
     image: "images/football.jpg",

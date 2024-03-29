@@ -10,14 +10,21 @@
       </head>
 
 <body>
-    <div id="app" class="container">
-        <h1 v-text="sitename"></h1>
+    <div id="app" class="container ">
+        <h1 v-text="sitename" class="mt-5"></h1>
 
         <div v-if="showCourse">
-            <button v-on:click="showCheckout" :class="{'disabled': cart.length ===0}">Checkout {{cartItemCount}}</button><br>
+            <button v-bind:disabled="cart.length==0" v-on:click="showCheckout" class="btn btn-outline-success">Checkout {{cartItemCount}}</button><br>
             
-            <div v-for="course in courses">
-              <img v-bind:src="course.image" />
+            <div class="row m-4">
+
+            
+            <div class="col-md-4" v-for="course in courses" :key="course.id">
+
+                <div class="card md-4 m-2 shadow">
+              <img v-bind:src="course.image" class="ct height: 300px; width: 100%; mx-auto d-block img-fluid"/>
+
+              <div class="card-body">
               <h2 v-text="course.title"></h2>
               <p v-html="course.description"></p>
               <p>Location: {{course.location}}</p>
@@ -49,8 +56,13 @@
               <div>
                 <span v-for="n in course.rating">★</span>
                 <span v-for="n in 5-course.rating">☆</span>
+            </div>
+            </div>
+        
+
               </div>
             </div> 
+            </div>
         </div>
 
         <div v-else>
@@ -58,8 +70,11 @@
     
             <h2>Shopping cart</h2>
             <ul>
-              <li v-for="item in cart" :key="item.id">
-                {{item.title}} {{item.price}}
+              <li v-for="item in cartCourses" :key="item.id">
+               
+                {{item.title}}
+               
+                {{item.price}} 
                 <button @click="removeFromCart(item)">Remove</button>
               </li>
             </ul>
@@ -76,14 +91,14 @@
     
             <p>
               <strong>Phone Number:</strong>
-              <input v-model.number="order.number" type="number" />
+              <input v-model.number="order.phoneNumber" type="number" />
             </p>
     
             <h2>Order Information</h2>
             <p>First Name: {{order.firstName}}</p>
             <p>phone Number: {{order.number}}</p>
     
-            <button v-on:click="submitForm">Place Order</button>
+            <button v-bind:disabled="!validInput" v-on:click="submitForm">Place Order</button>
         </div>
     </div>    
 
@@ -104,17 +119,15 @@
         methods: {
           addToCart(course) {
             this.cart.push(course.id);
-            //console.log(this.cart);
           },
           removeFromCart(course) {
             const index = this.cart.indexOf(course);
             if (index !== -1) {
-              this.cart.splice(index, 1); // Remove the course from the cart
-              // Assuming `courses` is an array containing course objects and each course object has a property `id`
+              this.cart.splice(index, 1); 
               const foundCourse = this.courses.find(
                 (item) => item.id === course.id
-              ); // Find the course in the courses array
-              foundCourse.spaces++; // Increment the spaces available for the course
+              ); 
+              foundCourse.spaces++; 
             }
           },
           showCheckout() {
@@ -141,6 +154,13 @@
           cartItemCount() {
             return this.cart.length;
           },
+          cartCourses() {
+            var items = [];
+            this.cart.forEach(id => {
+                items.push(this.courses.filter(c => c.id === id)[0])
+            })
+            return items
+          },
           sortedCourses() {
             let coursesArray = this.courses.slice(0);
             function compare(a, b) {
@@ -150,6 +170,13 @@
             }
             return coursesArray.sort(compare);
           },
+
+          validInput(){
+            return (
+                (/^[a-zA-Z\s]+$/).test(this.order.firstName) && (/^\d+$/).test(this.order.phoneNumber)
+            )
+          },
+
         },
     });
     </script>
