@@ -29,17 +29,19 @@
               v-model="sortOption"
               class="form-control"
               style="width: 350px"
+              v-on:change="searchCourses"
             >
               <option value="title">Title</option>
               <option value="location">Location</option>
               <option value="price">Price</option>
-              <option value="spaces">Spaces</option>
+              <option value="availableInventory">Spaces</option>
             </select>
             <br />
             <select
               v-model="sortOrder"
               class="form-control"
               style="width: 350px"
+              v-on:change="searchCourses"
             >
               <option value="asc">Ascending</option>
               <option value="desc">Descending</option>
@@ -52,6 +54,7 @@
               type="text"
               v-model="searchQuery"
               placeholder="Search lessons..."
+              v-on:input="searchCourses"
             />
           </div>
         </div>
@@ -123,16 +126,29 @@
         <br />
 
         <h2>Shopping cart</h2>
-        <ul>
-          <li v-for="item in cartCourses" :key="item.id" class="m-3 col-md-4">
-            {{item.title}} {{item.price}}
+        <ul class="row">
+          <li
+            v-for="item in cartCourses"
+            :key="item.course.id"
+            class="card col-md-3 m-2 shadow"
+          >
+            <img
+              v-bind:src="item.course.image"
+              class="ct height: 300px; width: 100%; mx-auto d-block img-fluid"
+            />
+            <div class="card-body">
+              <h2>{{item.course.title}}</h2>
+              <p>Location: {{item.course.location}}</p>
+              <p>Price: {{item.course.price}}</p>
+              <p>Quantity: {{item.count}}</p>
 
-            <button
-              @click="removeFromCart(item.id)"
-              class="btn btn-outline-danger"
-            >
-              Remove
-            </button>
+              <button
+                @click="removeFromCart(item.course.id)"
+                class="btn btn-outline-danger"
+              >
+                Remove
+              </button>
+            </div>
           </li>
         </ul>
 
@@ -141,6 +157,7 @@
           <strong>First Name:</strong>
           <input
             v-model.trim="order.firstName"
+            id="firstName"
             type="text"
             class="form-control-sm"
             pattern="^[a-zA-Z\s]+$"
@@ -151,6 +168,7 @@
           <strong>Phone Number:</strong>
           <input
             v-model.number="order.phoneNumber"
+            id="phoneNumber"
             type="number"
             class="form-control-sm"
           />
@@ -160,7 +178,12 @@
         <p>First Name: {{order.firstName}}</p>
         <p>phone Number: {{order.phoneNumber}}</p>
 
-        <button v-bind:disabled="!validInput" v-on:click="submitForm">
+        <button
+          type="submit"
+          class="mb-4"
+          v-bind:disabled="!validInput"
+          v-on:click="checkout"
+        >
           Place Order
         </button>
       </div>
@@ -171,7 +194,7 @@
         el: "#app",
         data: {
           sitename: "Welcome to After School!",
-          courses: courses,
+          courses: [],
           searchQuery: "",
           cart: [],
           showCourse: true,
@@ -183,10 +206,43 @@
           },
         },
 
+        created() {
+          this.getCourses();
+        },
+
         methods: {
+          // method to get lessons from mongo db
+          async getCourses() {
+            var url = "http://localhost:3000/collection/courses/";
+            var courses = await fetch(url);
+            courses = await courses.json();
+            this.courses = courses;
+            console.log("fecthed");
+          },
+
+          async searchCourses() {
+            var query = {
+              search: this.searchQuery,
+              sort: this.sortOption,
+              order: this.sortOrder,
+            };
+            var courses = await fetch(
+              "http://localhost:3000/search/collection/courses/",
+              {
+                method: "POST",
+                headers: { "content-Type": "application/json" },
+                body: JSON.stringify(query),
+              }
+            );
+            courses = await courses.json();
+            this.courses = courses;
+            console.log("fecthed");
+          },
+
           addToCart(course) {
             this.cart.push(course.id);
           },
+
           removeFromCart(courseID) {
             const index = this.cart.indexOf(courseID);
             if (index !== -1) {
@@ -212,6 +268,37 @@
             }
             return count;
           },
+
+          async checkout() {
+            var order = {
+              // all car items
+              courses: [...this.cart],
+              firstName: this.order.firstName,
+              phoneNumber: this.order.phoneNumber,
+            };
+
+            this.cart.forEach((item) => {
+              item = this.courses.filter((course) => course.id == item)[0];
+              item.availableInventory -= this.cartCount(item.id);
+              fetch(`http://localhost:3000/collection/courses/${item._id}`, {
+                method: "PUT",
+                headers: { "content-Type": "application/json" },
+                body: JSON.stringify({
+                  availableInventory: item.availableInventory,
+                }),
+              });
+            });
+
+            fetch("http://localhost:3000/collection/orders/", {
+              method: "POST",
+              headers: { "content-Type": "application/json" },
+              body: JSON.stringify(order),
+            });
+
+            alert("order successfull");
+            this.cart = []
+            this.showCourse = true
+          },
         },
 
         computed: {
@@ -219,11 +306,20 @@
             return this.cart.length;
           },
           cartCourses() {
-            var items = [];
+            const selectedCourses = {};
+
             this.cart.forEach((id) => {
-              items.push(this.courses.filter((c) => c.id === id)[0]);
+              if (selectedCourses[id]) {
+                selectedCourses[id].count++;
+              } else {
+                const course = this.courses.filter((c) => c.id === id)[0];
+                if (course) {
+                  selectedCourses[id] = { course, count: 1 };
+                }
+              }
             });
-            return items;
+
+            return Object.values(selectedCourses);
           },
 
           sortedCourses() {
@@ -251,28 +347,6 @@
               /^\d+$/.test(this.order.phoneNumber)
             );
           },
-
-          // sorting(){
-          //   if (this.searchQuery) {
-          //     var query = this.searchQuery.toLowerCase();
-          //     coursesArray = coursesArray.filter(
-          //       (c) =>
-          //         c.title.toLowerCase().includes(query) ||
-          //         c.location.toLowerCase().includes(query)
-          //     );
-          //   }
-
-          //   return this.searchLessons.slice().sort((a, b) =>{
-          //     const valueA = a[this.sortAttribute];
-          //     const valueB = b[this.sortAttribute];
-
-          //     const compare = typeof valueA === 'string'
-          //     ? valueA.localeCompare(valueB)
-          //     : valueA - valueB;
-
-          //     return this.sortOrder === 'asc' ? compare : -compare;
-          //   });
-          // }
         },
       });
     </script>
