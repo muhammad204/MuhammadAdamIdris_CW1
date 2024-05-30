@@ -213,7 +213,7 @@
         methods: {
           // method to get lessons from mongo db
           async getCourses() {
-            var url = "https://muhammadadamidris-cw2.vercel.app/collection/courses/";
+            var url = "https://cw-2-smoky.vercel.app/collection/courses/";
             var courses = await fetch(url);
             courses = await courses.json();
             this.courses = courses;
@@ -227,7 +227,7 @@
               order: this.sortOrder,
             };
             var courses = await fetch(
-              "https://muhammadadamidris-cw2.vercel.app/collection/courses/",
+              "https://cw-2-smoky.vercel.app/collection/courses/",
               {
                 method: "POST",
                 headers: { "content-Type": "application/json" },
@@ -280,7 +280,7 @@
             this.cart.forEach((item) => {
               item = this.courses.filter((course) => course.id == item)[0];
               item.availableInventory -= this.cartCount(item.id);
-              fetch(`https://muhammadadamidris-cw2.vercel.app/collection/courses/${item._id}`, {
+              fetch(`https://cw-2-smoky.vercel.app/collection/courses/${item._id}`, {
                 method: "PUT",
                 headers: { "content-Type": "application/json" },
                 body: JSON.stringify({
@@ -289,7 +289,7 @@
               });
             });
 
-            fetch("https://muhammadadamidris-cw2.vercel.app/collection/orders/", {
+            fetch("https://cw-2-smoky.vercel.app/collection/orders/", {
               method: "POST",
               headers: { "content-Type": "application/json" },
               body: JSON.stringify(order),
@@ -349,6 +349,7 @@
           },
         },
       });
+    
     </script>
   </body>
 </html>
